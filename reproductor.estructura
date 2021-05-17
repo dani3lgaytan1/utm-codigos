@@ -1,0 +1,179 @@
+#include <stdio.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h> 
+#include "../include/play.h"
+int menuedit(CDlinked_list *cdlinked_list);
+int menuprincipal();
+void menureproducir(CDlinked_list *cdlinked_list, int n);
+int main(){
+    CDlinked_list *cdlinked_list = create_clinked_list();
+    int option;
+    int n=0;
+    while(1){
+        //actual(cdlinked_list,n);
+         system("clear");
+        printf("\n|||||||||||||||||||||||||||||||||||||||||||||");
+        option=menuprincipal();
+       
+        //option = menu();
+        switch (option){
+        case 1:system("clear");
+           n=menuedit(cdlinked_list);
+            break;
+        case 2:system("clear"); 
+        menureproducir(cdlinked_list,n);
+            break;
+        case 3:exit(0);
+            break;
+        default: printf("Opción inválida, intenta de nuevo...");
+        break;
+        }
+    }
+    return 0;
+}
+int menuedit(CDlinked_list *cdlinked_list){
+    int option=0,j=0,i=0;
+    int n;
+    int year,item,del_node;
+    int op;
+    char cancion[100][40];
+    char *cancion1;
+    char artist[100][40];
+       char *artist1;
+    while (option!=4){   
+    //system("clear");
+    printf("\n|||||||||||||||||||||||||||||||||||||||||||||");
+    printf("\n\t*** MENU EDITAR***\n");
+    printf("|||||||||||||||||||||||||||||||||||||||||||||");
+    printf("\n---1. Insertar elemento-------------------");
+    printf("\n---2. Eliminar elemento-------------------");
+    printf("\n---3. Mostrar lista de reproduccion-------");
+    printf("\n---4.Salir--------------------------------");
+        printf("\nIngresar una opción:->");
+          fflush(stdin);
+        scanf("%d", &option);
+       
+        switch (option){
+        case 1: 
+                printf("Ingresa la cancion :\n");
+         fflush(stdin);
+                scanf("%s",cancion[j]);
+                cancion1=cancion[j];
+                printf("Ingresa el nombre del artista  :\n");
+                fflush(stdin);
+               scanf("%s",artist[i]);
+                artist1=artist[i];
+                printf("Ingresar el año a insertar:");
+                scanf("%d", &year);
+                insert(&cdlinked_list->head,year,cancion1,artist1);
+                i++;
+                j++;
+                n=asignarid(cdlinked_list); 
+         break;
+         case 2:printf("Ingresar el numero de la cancion eliminar:");
+                scanf("%d", &item);
+                op=eliminar(cdlinked_list,item);
+                if (op==1){
+                    del_node = delete_node(&cdlinked_list->head, item);
+                    if( del_node == INT_MIN){
+                    printf("Lista vacía ");
+                    } else {
+                         if (del_node == INT_MAX){
+                           printf("\nElemento no fue encontrado...\n");
+                           } else {
+                             printf("\nElemento eliminado correctamente...\n");
+                             n=asignarid(cdlinked_list); 
+                    }
+                } 
+                
+                }else{
+                    if (op==0){
+                     printf("\nTranquilo no borraremos nada :)\n");
+                }else{
+                    printf("\n Mejor ingresa algunas canciones :)");
+                    }
+                }
+                break;
+        case 3:
+        printf("\n|||||||||||||||||||||||||||||||||||||||||||||\n");
+        display(cdlinked_list);
+        break;
+        case 4:break;
+        default:printf("Opción inválida, intenta de nuevo...");
+            break;
+        }
+    }
+
+    return n;
+      
+}
+int menuprincipal(){
+     int option;
+printf("\n   BIENVENIDO A TU REPRODUCTOR DE MUSICA");
+printf("\n\t*** MENU PRINCIPAL***\n");
+printf("|||||||||||||||||||||||||||||||||||||||||||||");
+printf("\n----1.Editar la lista de reproduccion-----");
+printf("\n----2.-Reproducir-------------------------");
+printf("\n----3.- Salir-----------------------------");  
+printf("\nIngresa una opción:->");  
+scanf("\n\n%d", &option);
+return option;
+}
+
+void menureproducir(CDlinked_list *cdlinked_list,int n){
+Node *temp=cdlinked_list->head;
+int option=0,aux=n;
+int condicion=0;
+while (option!=4){
+    //printf("\nesta es n : %i",n);
+    printf("\n||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+    printf("\n||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+    printf("\n<<<<2●Atras- - - - - - - -1●Reproducir - - - - - -3●Siguiente>>>>");
+    printf("\n\n4.-regresar al menu principal");
+      printf("\n||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+    printf("\nIngresar una opción->");
+    scanf("%d", &option);
+    switch (option){
+    case 1:
+     printf("\nREPRODUCIENDO:\n");
+    if (temp!=NULL){
+    printf("\n\t♫ ♪ cancion: %s ♫ ♪",temp->song);
+    printf("\n▂ ▃ ▅ ▆ █"); 
+    printf("\tArtista : %s",temp->artist);
+    printf(" : %i",temp->year);
+    printf("█ ▆ ▅ ▃ ▂ \n");
+    printf("\n▄ █ ▄ █ ▄ ▄ █ ▄ █ ▄ █ ▄ ▄ █ ▄ █ ▄ █ ▄ █ ▄ \n");
+    n=1;
+        
+    }else{
+        printf("\nAun no hay canciones en la lista de reproduccion\n");
+    }
+        break;
+    case 2: 
+    if (condicion==n){//verificar que no se el inicio de la lista
+    n=aux;//asignar el numero de elementos que tiene la lista para empezar desde el final 
+    atras(cdlinked_list,n);
+    n--;
+    }else{
+    atras(cdlinked_list,n);
+     n--; 
+    }
+    break;
+    case 3: 
+    condicion=aux;
+    if (condicion==n)//verificar si no es el final de la lista
+    {n=0;//si es el final asignar a n el inicio de la lista para poder avanzar desde ahi
+    siguiente(cdlinked_list,n);
+    n++;  
+    }else{
+        ++n;
+       siguiente(cdlinked_list,n);
+    }
+    break;
+    case 4: break;
+    default: printf("Opción inválida, intenta de nuevo...");
+        break;
+    }
+}
+};
